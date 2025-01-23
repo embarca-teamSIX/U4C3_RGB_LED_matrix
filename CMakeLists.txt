@@ -7,9 +7,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Initialise pico_sdk from installed location
-# (note this can come from environment, CMake cache etc)
-
-# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
 if(WIN32)
     set(USERHOME $ENV{USERPROFILE})
 else()
@@ -22,7 +19,7 @@ set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
 if (EXISTS ${picoVscode})
     include(${picoVscode})
 endif()
-# ====================================================================================
+
 set(PICO_BOARD pico_w CACHE STRING "Board type")
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
@@ -34,29 +31,27 @@ project(RGB_LED_Matrix C CXX ASM)
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
+add_executable(RGB_LED_Matrix
+    RGB_LED_Matrix.c
+    include/keypad.c
+)
 
-add_executable(RGB_LED_Matrix RGB_LED_Matrix.c )
-
+# Set the program name and version
 pico_set_program_name(RGB_LED_Matrix "RGB_LED_Matrix")
 pico_set_program_version(RGB_LED_Matrix "0.1")
 
-# Modify the below lines to enable/disable output over UART/USB
+# Enable UART/USB output as required
 pico_enable_stdio_uart(RGB_LED_Matrix 0)
-pico_enable_stdio_usb(RGB_LED_Matrix 0)
+pico_enable_stdio_usb(RGB_LED_Matrix 1)
 
 # Add the standard library to the build
-target_link_libraries(RGB_LED_Matrix
-        pico_stdlib)
+target_link_libraries(RGB_LED_Matrix pico_stdlib)
 
-# Add the standard include files to the build
+# Add the "include" directory to the include path
 target_include_directories(RGB_LED_Matrix PRIVATE
-  ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
-# Add any user requested libraries
-target_link_libraries(RGB_LED_Matrix 
-        
-        )
-
+# Add extra outputs for the project
 pico_add_extra_outputs(RGB_LED_Matrix)
-
