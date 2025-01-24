@@ -59,7 +59,11 @@ pico_enable_stdio_uart(RGB_LED_Matrix 0)
 pico_enable_stdio_usb(RGB_LED_Matrix 1)
 
 # Add the standard library to the build
-target_link_libraries(RGB_LED_Matrix pico_stdlib)
+target_link_libraries(RGB_LED_Matrix 
+        pico_stdlib
+        hardware_pwm
+        hardware_pio
+        )
 
 # Add the "include" directory to the include path
 target_include_directories(RGB_LED_Matrix PRIVATE

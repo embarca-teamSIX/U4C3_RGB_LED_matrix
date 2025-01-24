@@ -11,33 +11,36 @@ char keys[ROWS][COLS] = {
 
 // Inicializa as linhas e colunas do teclado
 void init_keypad(uint8_t row_pins[], uint8_t col_pins[]) {
-    // Configura os pinos das linhas como entradas pull-down
-    for (int i = 0; i < ROWS; i++) {
-        gpio_init(row_pins[i]);
-        gpio_set_dir(row_pins[i], GPIO_IN);
-        gpio_pull_down(row_pins[i]);
+    for (int i = 0; i < ROWS; i++) {  // Itera sobre cada linha do teclado.
+        gpio_init(row_pins[i]);       // Inicializa o pino da linha atual.
+        gpio_set_dir(row_pins[i], GPIO_OUT); // Define o pino como saída.
+        gpio_put(row_pins[i], 1);     // Define o pino como alto (1).
     }
-    // Configura os pinos das colunas como saídas
-    for (int i = 0; i < COLS; i++) {
-        gpio_init(col_pins[i]);
-        gpio_set_dir(col_pins[i], GPIO_OUT);
-        gpio_put(col_pins[i], 1); // Nível lógico alto inicialmente
+
+    for (int i = 0; i < COLS; i++) {  // Itera sobre cada coluna do teclado.
+        gpio_init(col_pins[i]);       // Inicializa o pino da coluna atual.
+        gpio_set_dir(col_pins[i], GPIO_IN);  // Define o pino como entrada.
+        gpio_pull_up(col_pins[i]);    // Ativa o resistor de pull-up no pino.
     }
 }
 
 // Verifica qual tecla foi pressionada
 char scan_keypad(uint8_t row_pins[], uint8_t col_pins[]) {
-    for (int col = 0; col < COLS; col++) {
-        // Ativa a coluna atual (nível lógico baixo)
-        gpio_put(col_pins[col], 0);
-        for (int row = 0; row < ROWS; row++) {
-            if (gpio_get(row_pins[row]) == 1) { // Verifica se a linha está ativa
-                while (gpio_get(row_pins[row]) == 1); // Aguarda até que a tecla seja liberada
-                gpio_put(col_pins[col], 1); // Restaura a coluna para nível lógico alto
+    for (int row = 0; row < ROWS; row++)
+    {
+        gpio_put(row_pins[row], 0);
+
+        for (int col = 0; col < COLS; col++) 
+        {
+            if (gpio_get(col_pins[col]) == 0)
+            {
+                while (gpio_get(col_pins[col]) == 1); // Aguarda até que a tecla seja liberada
+                gpio_put(row_pins[row], 1); // Restaura a coluna para nível lógico alto
                 return keys[row][col]; // Retorna a tecla correspondente
             }
         }
-        gpio_put(col_pins[col], 1); // Restaura a coluna para nível lógico alto
+        gpio_put(row_pins[row], 1);
     }
+
     return '\0'; // Nenhuma tecla foi pressionada
 }
