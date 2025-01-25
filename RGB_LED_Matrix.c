@@ -76,7 +76,7 @@ uint32_t matrix_rgb(double b, double r, double g)
 //--------------------------------------------------
 //funções comunidade aqui
 /**
- * @brief função tocar e anmar bandeira americana
+ * @brief função tocar e anima bandeira americana
  *
  * @note função que funciona sendo chamada e sem demais interações
  *
