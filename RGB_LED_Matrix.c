@@ -80,7 +80,25 @@ void escolher_acao(char key)
 {
     switch (key) 
     {
-        case '1': 
+        case '1':
+            for(int i = 0; i < 2; i++)
+            {
+                desenho_pio(seta_1, valor_led, pio, sm);
+                sleep_ms(300);
+                desenho_pio(seta_2, valor_led, pio, sm);
+                sleep_ms(300);
+                desenho_pio(seta_3, valor_led, pio, sm);
+                sleep_ms(300);
+                desenho_pio(seta_4, valor_led, pio, sm);
+                sleep_ms(300);
+                desenho_pio(seta_5, valor_led, pio, sm);
+                sleep_ms(300);
+                desenho_pio(seta_6, valor_led, pio, sm);
+                sleep_ms(300);
+                desenho_pio(seta_7, valor_led, pio, sm);
+                sleep_ms(300);
+            } 
+            desenho_pio(desliga_tudo, valor_led, pio, sm); 
             break; 
         case '2': 
             break;
@@ -99,26 +117,7 @@ void escolher_acao(char key)
             break;
         case '9':
             break;
-        case '0':
-            for(int i = 0; i < 2; i++)
-            {
-                desenho_pio(seta_1, valor_led, pio, sm);
-                sleep_ms(300);
-                desenho_pio(seta_2, valor_led, pio, sm);
-                sleep_ms(300);
-                desenho_pio(seta_3, valor_led, pio, sm);
-                sleep_ms(300);
-                desenho_pio(seta_4, valor_led, pio, sm);
-                sleep_ms(300);
-                desenho_pio(seta_5, valor_led, pio, sm);
-                sleep_ms(300);
-                desenho_pio(seta_6, valor_led, pio, sm);
-                sleep_ms(300);
-                desenho_pio(seta_7, valor_led, pio, sm);
-                sleep_ms(300);
-            } 
-            desenho_pio(desliga_tudo, valor_led, pio, sm);
-               
+        case '0':  
             break;
         case 'A': 
             desenho_pio(desliga_tudo, valor_led, pio, sm); 
