@@ -44,6 +44,7 @@
         "adc.h": "c",
         "stdint.h": "c",
         "clocks.h": "c",
-        "keypad.h": "c"
+        "keypad.h": "c",
+        "bootrom.h": "c"
     }
 }
