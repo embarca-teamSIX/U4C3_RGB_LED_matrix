@@ -14,7 +14,7 @@
 
 #include "include/keypad.h"
 #include "include/animacao_seta_jorge.h"
-
+#include "pride_of_flag.h"
 //arquivo .pio
 #include "pio_matrix.pio.h"
 
@@ -90,6 +90,43 @@ uint32_t matrix_rgb(double b, double r, double g)
 void star_spangled_gleison()
 {
 
+}
+/**
+ * @brief tocar hino
+ * @usage
+ * ```
+ * chamar a função tocar_tom_buzzer com os criterios corretos para tocar o
+ * spangled
+ * ```
+ */
+void tocar_hino()
+{
+ for (int i = 0; i < sizeof(notas) / sizeof(notas[0]); i++) {
+        tocar_tom_buzzer(notas[i], duracoes[i]);
+        sleep_ms(50); 
+    }
+
+    return 0;
+}
+/**
+ * @brief anima bandeira
+ * @usage
+ * ```
+ * função que desenhará a bandeira usando os arrays presentes na biblioteca especifica
+ * ```
+ */
+void anima_bandeira()
+{
+//tem de ter laço e pio_sm_put_blocking(pio, sm, valor_led);
+//3 arrays 2d
+int frames_flag=10;
+    for(int j=0; j< frames_flag; j++)
+    {
+            for(int i=0; i<NUM_PIXELS; i++)//laço interno
+            {
+
+            }
+    }
 }
 void desenho_pio(double *desenho, uint32_t valor_led, PIO pio, uint sm){
 
