@@ -12,6 +12,7 @@
 #include "pico/bootrom.h"
 
 #include "include/keypad.h"
+#include "include/animacao_seta_jorge.h"
 
 //arquivo .pio
 #include "pio_matrix.pio.h"
@@ -75,7 +76,6 @@ void desenho_pio(double *desenho, uint32_t valor_led, PIO pio, uint sm){
     printf("clock set to %ld\n", clock_get_hz(clk_sys));
 }
 
-
 void escolher_acao(char key) 
 {
     switch (key) 
@@ -99,8 +99,26 @@ void escolher_acao(char key)
             break;
         case '9':
             break;
-        case '0': 
-            // Liga o led RGB    
+        case '0':
+            for(int i = 0; i < 2; i++)
+            {
+                desenho_pio(seta_1, valor_led, pio, sm);
+                sleep_ms(300);
+                desenho_pio(seta_2, valor_led, pio, sm);
+                sleep_ms(300);
+                desenho_pio(seta_3, valor_led, pio, sm);
+                sleep_ms(300);
+                desenho_pio(seta_4, valor_led, pio, sm);
+                sleep_ms(300);
+                desenho_pio(seta_5, valor_led, pio, sm);
+                sleep_ms(300);
+                desenho_pio(seta_6, valor_led, pio, sm);
+                sleep_ms(300);
+                desenho_pio(seta_7, valor_led, pio, sm);
+                sleep_ms(300);
+            } 
+            desenho_pio(desliga_tudo, valor_led, pio, sm);
+               
             break;
         case 'A': 
             desenho_pio(desliga_tudo, valor_led, pio, sm); 
