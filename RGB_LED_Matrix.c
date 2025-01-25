@@ -34,11 +34,13 @@ uint32_t valor_led;
 double r = 0.0, b = 0.0 , g = 0.0;
 uint sm = 0;
 
-double ligar_todos_os_leds[25] =   {1.0, 1.0, 1.0, 1.0, 1.0,
-                            1.0, 1.0, 1.0, 1.0, 1.0, 
-                            1.0, 1.0, 1.0, 1.0, 1.0,
-                            1.0, 1.0, 1.0, 1.0, 1.0,
-                            1.0, 1.0, 1.0, 1.0, 1.0};
+double ligar_todos_os_leds_20[25] =   {0.2, 0.2, 0.2, 0.2, 0.2,
+                                        0.2, 0.2, 0.2, 0.2, 0.2, 
+                                        0.2, 0.2, 0.2, 0.2, 0.2,
+                                        0.2, 0.2, 0.2, 0.2, 0.2,
+                                        0.2, 0.2, 0.2, 0.2, 0.2};
+
+
 
                             //vetor para criar imagem na matriz de led - 1
 double desliga_tudo[25] =   {0.0, 0.0, 0.0, 0.0, 0.0,
@@ -70,6 +72,36 @@ void desenho_pio(double *desenho, uint32_t valor_led, PIO pio, uint sm){
 
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
         valor_led = matrix_rgb(desenho[24-i], desenho[24-i], desenho[24-i]);
+        pio_sm_put_blocking(pio, sm, valor_led);
+        //imprimir_binario(valor_led);
+    }
+    printf("clock set to %ld\n", clock_get_hz(clk_sys));
+}
+
+void desenho_pio_azul_100(uint32_t valor_led, PIO pio, uint sm){
+
+    for (int16_t i = 0; i < NUM_PIXELS; i++) {
+        valor_led = matrix_rgb(1.0, 0.0, 0.0);
+        pio_sm_put_blocking(pio, sm, valor_led);
+        //imprimir_binario(valor_led);
+    }
+    printf("clock set to %ld\n", clock_get_hz(clk_sys));
+}
+
+void desenho_pio_vermelho_80(uint32_t valor_led, PIO pio, uint sm){
+
+    for (int16_t i = 0; i < NUM_PIXELS; i++) {
+        valor_led = matrix_rgb(0.0, 0.8, 0.0);
+        pio_sm_put_blocking(pio, sm, valor_led);
+        //imprimir_binario(valor_led);
+    }
+    printf("clock set to %ld\n", clock_get_hz(clk_sys));
+}
+
+void desenho_pio_verde_50(uint32_t valor_led, PIO pio, uint sm){
+
+    for (int16_t i = 0; i < NUM_PIXELS; i++) {
+        valor_led = matrix_rgb(0.0, 0.0, 0.5);
         pio_sm_put_blocking(pio, sm, valor_led);
         //imprimir_binario(valor_led);
     }
@@ -113,24 +145,27 @@ void escolher_acao(char key)
         case '7': 
             break;
         case '8': 
-            desenho_pio(ligar_todos_os_leds, valor_led, pio, sm);
             break;
         case '9':
             break;
-        case '0':  
+        case '0': 
             break;
         case 'A': 
             desenho_pio(desliga_tudo, valor_led, pio, sm); 
             break;
-        case 'B': 
+        case 'B':
+            desenho_pio_azul_100(valor_led, pio, sm); 
             break;
-        case 'C': 
+        case 'C':
+            desenho_pio_vermelho_80(valor_led, pio, sm); 
             break;
-        case 'D': 
+        case 'D':
+            desenho_pio_verde_50(valor_led, pio, sm); 
             break;
         case '*': 
             break;
-        case '#': 
+        case '#':
+            desenho_pio(ligar_todos_os_leds_20, valor_led, pio, sm); 
             break;
         default: 
             desenho_pio(desliga_tudo, valor_led, pio, sm);
