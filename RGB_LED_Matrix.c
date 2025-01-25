@@ -10,6 +10,7 @@
 #include "hardware/clocks.h"
 #include "hardware/adc.h"
 #include "pico/bootrom.h"
+#include "hardware/pwm.h"
 
 #include "include/keypad.h"
 #include "include/animacao_seta_jorge.h"
@@ -17,11 +18,16 @@
 //arquivo .pio
 #include "pio_matrix.pio.h"
 
+#include "include/coracao_pulsante_Deividson.h"
+
 //número de LEDs
 #define NUM_PIXELS 25
 
 //pino de saída
 #define OUT_PIN 7
+
+#define BUZZER_A_PIN 10
+#define BUZZER_B_PIN 21
 
 // Define os pinos do teclado
 uint8_t row_pins[ROWS] = {16, 17, 18, 19};
@@ -78,6 +84,59 @@ void desenho_pio(double *desenho, uint32_t valor_led, PIO pio, uint sm){
     printf("clock set to %ld\n", clock_get_hz(clk_sys));
 }
 
+// Função para tocar um tom específico no buzzer
+void tocar_tom_buzzer(uint16_t frequency, uint duration_ms) {
+    gpio_set_function(BUZZER_B_PIN, GPIO_FUNC_PWM); // Configura pino do buzzer para PWM
+    uint slice_num = pwm_gpio_to_slice_num(BUZZER_B_PIN);
+
+    pwm_set_wrap(slice_num, 125000000 / frequency); // Período do PWM
+    pwm_set_gpio_level(BUZZER_B_PIN, (125000000 / frequency) / 2); // Duty cycle 50%
+    pwm_set_enabled(slice_num, true); // Ativa o PWM
+
+    sleep_ms(duration_ms); // Toca por tempo especificado
+
+    pwm_set_enabled(slice_num, false); // Desliga o PWM
+    gpio_set_function(BUZZER_B_PIN, GPIO_FUNC_SIO);
+    gpio_put(BUZZER_B_PIN, 0);
+}
+
+// Função para tocar o som simulando pulsação
+void tocar_pulsacao() {
+    tocar_tom_buzzer(440, 200); // Primeiro batimento: frequência 440 Hz, duração 200ms
+    sleep_ms(100);              // Pausa curta entre batimentos
+    tocar_tom_buzzer(440, 400); // Segundo batimento: frequência 440 Hz, duração 400ms
+    sleep_ms(300);              // Pausa antes do próximo ciclo
+}
+
+// Função para desenhar um frame na matriz de LEDs com intensidade no canal vermelho
+void desenho_pio_vermelho(double *desenho, uint32_t valor_led, PIO pio, uint sm) {
+    for (int16_t i = 0; i < NUM_PIXELS; i++) {
+        valor_led = matrix_rgb(0.0, desenho[24 - i], 0.0); // Corrigido para usar o canal vermelho corretamente
+        pio_sm_put_blocking(pio, sm, valor_led);
+    }
+    printf("Frame desenhado na matriz de LEDs com cor vermelha.\n");
+}
+
+// Função do coração pulsante com som
+void coracao_pulsante_com_som_vermelho() {
+    // Define os dois frames do coração
+    double *frames[] = {coracao_alto, coracao_medio};
+    int delays[] = {300, 300}; // Tempo de exibição de cada frame
+
+    for (int i = 0; i < 6; i++) { // Aumenta o número de ciclos de pulsação
+        desenho_pio_vermelho(frames[i % 2], valor_led, pio, sm); // Alterna entre os dois frames
+
+        if (i % 2 == 0) { // Sincroniza o som no frame de alta intensidade (batimento principal)
+            tocar_pulsacao();
+        }
+
+        sleep_ms(delays[i % 2]); // Espera antes de mudar para o próximo frame
+    }
+}
+
+
+
+
 void desenho_pio_azul_100(uint32_t valor_led, PIO pio, uint sm){
 
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
@@ -133,6 +192,7 @@ void escolher_acao(char key)
             desenho_pio(desliga_tudo, valor_led, pio, sm); 
             break; 
         case '2': 
+        coracao_pulsante_com_som_vermelho();
             break;
         case '3': 
             break;
@@ -180,6 +240,16 @@ int main()
     ok = set_sys_clock_khz(128000, false);
 
     stdio_init_all();
+
+    // Configura os pinos do buzzer  Bcomo saída
+    gpio_init(BUZZER_B_PIN);
+    gpio_set_dir(BUZZER_B_PIN, GPIO_OUT);
+
+    // Configura os pinos do buzzer A como saída
+    gpio_init(BUZZER_A_PIN);
+    gpio_set_dir(BUZZER_A_PIN, GPIO_OUT);
+
+
 
     printf("iniciando a transmissão PIO");
     if (ok) printf("clock set to %ld\n", clock_get_hz(clk_sys));
