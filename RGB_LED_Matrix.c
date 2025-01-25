@@ -66,6 +66,7 @@ void escolher_acao(char key)
             break; // Ação para a tecla '4'
         case '5': 
             break; // Ação para a tecla '5'
+                  //função de gleison
         case '6': 
             break; // Ação para a tecla '6'
         case '7': 
