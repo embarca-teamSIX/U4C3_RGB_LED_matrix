@@ -73,7 +73,24 @@ uint32_t matrix_rgb(double b, double r, double g)
   B = b * 255;
   return (G << 24) | (R << 16) | (B << 8);
 }
+//--------------------------------------------------
+//funções comunidade aqui
+/**
+ * @brief função tocar e anmar bandeira americana
+ *
+ * @note função que funciona sendo chamada e sem demais interações
+ *
+ * @usage
+ * ```
+ * ```
+ *
+ * @details Função que chamara funções que gerarão o led na amtriz e tocar buzzer
+ *             
+ */
+void star_spangled_gleison()
+{
 
+}
 void desenho_pio(double *desenho, uint32_t valor_led, PIO pio, uint sm){
 
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
@@ -199,6 +216,7 @@ void escolher_acao(char key)
         case '4': 
             break;
         case '5': 
+                star_spangled_gleison();
             break; // Ação para a tecla '5'
                   //função de gleison
         case '6': 
