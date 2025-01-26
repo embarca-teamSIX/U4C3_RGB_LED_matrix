@@ -59,24 +59,6 @@ void desenho_pio_vermelho(double *desenho, pio_t * meu_pio)
     printf("Frame desenhado na matriz de LEDs com cor vermelha.\n");
 }
 
-// // Função do coração pulsante com som
-// void coracao_pulsante_com_som_vermelho(pio_t * meu_pio, double *coracao_alto, double *coracao_medio) {
-//     // Define os dois frames do coração
-//     uint32_t valor_led;
-//     double *frames[] = {coracao_alto, coracao_medio};
-//     int delays[] = {300, 300}; // Tempo de exibição de cada frame
-
-//     for (int i = 0; i < 6; i++) { // Aumenta o número de ciclos de pulsação
-//         desenho_pio_vermelho(frames[i % 2], valor_led, &meu_pio, meu_pio->sm); // Alterna entre os dois frames
-
-//         if (i % 2 == 0) { // Sincroniza o som no frame de alta intensidade (batimento principal)
-//             tocar_pulsacao();
-//         }
-
-//         sleep_ms(delays[i % 2]); // Espera antes de mudar para o próximo frame
-//     }
-// }
-
 void desenho_pio_azul_100(pio_t * meu_pio)
 {
     uint32_t valor_led = 0;

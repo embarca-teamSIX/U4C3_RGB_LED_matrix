@@ -20,6 +20,8 @@
 
 // #include "include/coracao_pulsante_Deividson.h"
 #include "include/matriz_led_control.h"
+#include "include/coracao_pulsante_Deividson.h"
+#include "include/buzzer.h"
 
 //pino de saída
 #define OUT_PIN 7
@@ -41,42 +43,31 @@ pio_t meu_pio = {
     .sm = 0          
 };
 
-// // Função para tocar um tom específico no buzzer
-// void tocar_tom_buzzer(uint16_t frequency, uint duration_ms) {
-//     gpio_set_function(BUZZER_B_PIN, GPIO_FUNC_PWM); // Configura pino do buzzer para PWM
-//     uint slice_num = pwm_gpio_to_slice_num(BUZZER_B_PIN);
 
-//     pwm_set_wrap(slice_num, 125000000 / frequency); // Período do PWM
-//     pwm_set_gpio_level(BUZZER_B_PIN, (125000000 / frequency) / 2); // Duty cycle 50%
-//     pwm_set_enabled(slice_num, true); // Ativa o PWM
+void coracao_pulsante_com_som_vermelho(pio_t *meu_pio) {
+    for (int i = 0; i < 3; i++) {
+        desenho_pio_vermelho(coracao_alto, meu_pio);
+        tocar_pulsacao();
+        sleep_ms(300);
+        desenho_pio_vermelho(coracao_medio, meu_pio);
+        sleep_ms(300);
+    }
 
-//     sleep_ms(duration_ms); // Toca por tempo especificado
+    desenho_pio_vermelho(explosao_frame1, meu_pio);
+    tocar_explosao();
+    sleep_ms(300);
+    desenho_pio_vermelho(explosao_frame2, meu_pio);
+    sleep_ms(300);
+    desenho_pio_vermelho(explosao_frame3, meu_pio);
+    sleep_ms(300);
 
-//     pwm_set_enabled(slice_num, false); // Desliga o PWM
-//     gpio_set_function(BUZZER_B_PIN, GPIO_FUNC_SIO);
-//     gpio_put(BUZZER_B_PIN, 0);
-// }
-
-// // Função para tocar o som simulando pulsação
-// void tocar_pulsacao() {
-//     tocar_tom_buzzer(440, 200); // Primeiro batimento: frequência 440 Hz, duração 200ms
-//     sleep_ms(100);              // Pausa curta entre batimentos
-//     tocar_tom_buzzer(440, 400); // Segundo batimento: frequência 440 Hz, duração 400ms
-//     sleep_ms(300);              // Pausa antes do próximo ciclo
-// }
-
-void gpio_setup()
-{
-    // Configura os pinos do buzzer  Bcomo saída
-    gpio_init(BUZZER_B_PIN);
-    gpio_set_dir(BUZZER_B_PIN, GPIO_OUT);
-
-    // Configura os pinos do buzzer A como saída
-    gpio_init(BUZZER_A_PIN);
-    gpio_set_dir(BUZZER_A_PIN, GPIO_OUT);
-
-    // Inicializa o teclado
-    init_keypad(row_pins, col_pins);
+    desenho_pio_vermelho(restauracao_frame1, meu_pio);
+    tocar_restauracao();
+    sleep_ms(300);
+    desenho_pio_vermelho(restauracao_frame2, meu_pio);
+    sleep_ms(300);
+    desenho_pio_vermelho(restauracao_frame3, meu_pio);
+    sleep_ms(300);
 }
 
 void escolher_acao(char key) 
@@ -104,6 +95,8 @@ void escolher_acao(char key)
             desliga_tudo(&meu_pio); 
             break; 
         case '2': 
+        coracao_pulsante_com_som_vermelho(&meu_pio);
+
         // coracao_pulsante_com_som_vermelho();
             break;
         case '3': 
