@@ -62,6 +62,7 @@ pico_sdk_init()
 add_executable(RGB_LED_Matrix
     RGB_LED_Matrix.c
     include/keypad.c
+    include/matriz_led_control.c
 )
 
 # Set the program name and version

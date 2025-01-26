@@ -29,6 +29,7 @@ char scan_keypad(uint8_t row_pins[], uint8_t col_pins[]) {
     for (int row = 0; row < ROWS; row++)
     {
         gpio_put(row_pins[row], 0);
+        sleep_ms(5);
 
         for (int col = 0; col < COLS; col++) 
         {

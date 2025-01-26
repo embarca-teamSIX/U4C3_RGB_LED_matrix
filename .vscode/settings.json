@@ -37,7 +37,11 @@
     "raspberry-pi-pico.cmakePath": "${HOME}/.pico-sdk/cmake/v3.29.9/bin/cmake",
     "raspberry-pi-pico.ninjaPath": "${HOME}/.pico-sdk/ninja/v1.12.1/ninja",
     "files.associations": {
-        "*.embeddedhtml": "html",
-        "animacao_seta_jorge.h": "c"
+        "coracao_pulsante_deividson.h": "c",
+        "pio_matrix.pio.h": "c",
+        "pwm.h": "c",
+        "bootrom.h": "c",
+        "animacao_seta_jorge.h": "c",
+        "matriz_led_control.h": "c"
     }
 }
