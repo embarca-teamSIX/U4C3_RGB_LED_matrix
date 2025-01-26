@@ -1,9 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <unistd.h> 
 
-// Defina os pinos do teclado como exemplo
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
+
 #define ROWS 4
 #define COLS 4
 
@@ -14,7 +18,6 @@ char keypad[ROWS][COLS] = {
     {'*', '0', '#', 'D'}
 };
 
-
 char scan_keypad() {
     char tecla;
     printf("Pressione uma tecla do teclado matricial (use '3' para testar, 'Q' para sair): ");
@@ -24,8 +27,6 @@ char scan_keypad() {
 
 void executar_comando_tecla3() {
     printf("Comando da tecla '3' executado com sucesso!\n");
-    // Adicione o comando que deseja executar aqui
-    // Exemplo: acender LEDs.
 }
 
 void executar_morse(char letra) {
@@ -54,7 +55,7 @@ int main() {
 
         if (key == '3') {
             executar_comando_tecla3();
-            executar_morse('S'); // Exemplo de execução de código Morse
+            executar_morse('S');
             executar_morse('O');
             executar_morse('S');
         } else if (key == 'Q' || key == 'q') {
@@ -64,7 +65,11 @@ int main() {
             printf("Tecla '%c' pressionada, mas sem comando associado.\n", key);
         }
 
-        sleep(1); 
+#ifdef _WIN32
+        Sleep(1000);
+#else
+        sleep(1);
+#endif
     }
 
     return 0;
