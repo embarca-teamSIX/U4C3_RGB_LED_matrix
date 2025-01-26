@@ -1,19 +1,71 @@
-#include <stdio.h>  // Inclui biblioteca padrão para entrada e saída
-//teste
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <unistd.h> 
+
+// Defina os pinos do teclado como exemplo
+#define ROWS 4
+#define COLS 4
+
+char keypad[ROWS][COLS] = {
+    {'1', '2', '3', 'A'},
+    {'4', '5', '6', 'B'},
+    {'7', '8', '9', 'C'},
+    {'*', '0', '#', 'D'}
+};
+
+
+char scan_keypad() {
+    char tecla;
+    printf("Pressione uma tecla do teclado matricial (use '3' para testar, 'Q' para sair): ");
+    scanf(" %c", &tecla);
+    return tecla;
+}
+
+void executar_comando_tecla3() {
+    printf("Comando da tecla '3' executado com sucesso!\n");
+    // Adicione o comando que deseja executar aqui
+    // Exemplo: acender LEDs.
+}
+
+void executar_morse(char letra) {
+    switch (letra) {
+        case 'S':
+            printf("... "); // Código Morse para 'S'
+            break;
+        case 'O':
+            printf("--- "); // Código Morse para 'O'
+            break;
+        default:
+            printf("Letra '%c' não tem código Morse associado.\n", letra);
+            break;
+    }
+    printf("\n");
+}
+
 int main() {
-    int num1, num2, soma;
+    char key;
+    bool running = true;
 
-    // Solicita ao usuário para inserir dois números
-    printf("Digite o primeiro numero: ");
-    scanf("%d", &num1);
-    printf("Digite o segundo numero: ");
-    scanf("%d", &num2);
+    printf("Sistema inicializado. Pressione teclas para interagir.\n");
 
-    // Calcula a soma dos dois números
-    soma = num1 + num2;
+    while (running) {
+        key = scan_keypad();
 
-    // Exibe o resultado
-    printf("A soma de %d e %d é: %d\n", num1, num2, soma);
+        if (key == '3') {
+            executar_comando_tecla3();
+            executar_morse('S'); // Exemplo de execução de código Morse
+            executar_morse('O');
+            executar_morse('S');
+        } else if (key == 'Q' || key == 'q') {
+            printf("Encerrando o programa...\n");
+            running = false;
+        } else {
+            printf("Tecla '%c' pressionada, mas sem comando associado.\n", key);
+        }
 
-    return 0;  // Indica que o programa terminou com sucesso
+        sleep(1); 
+    }
+
+    return 0;
 }
