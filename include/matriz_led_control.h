@@ -29,6 +29,6 @@ void desenho_pio_vermelho_80(pio_t * meu_pio);
 void desenho_pio_verde_50(pio_t * meu_piom);
 void desliga_tudo(pio_t * meu_pio);
 void ligar_todos_os_leds_20_p(pio_t * meu_pio);
-
+void anima_thais(pio_t * meu_pio);
 
 #endif  // MATRIZ_LED_CONTROL

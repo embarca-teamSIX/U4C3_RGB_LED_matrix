@@ -123,3 +123,8 @@ void desliga_tudo(pio_t * meu_pio)
     }
     printf("clock set to %ld\n", clock_get_hz(clk_sys));
 }
+
+void anima_thais(pio_t * meu_pio)
+{
+    // implementar minha função
+}

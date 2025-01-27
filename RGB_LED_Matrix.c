@@ -99,7 +99,9 @@ void escolher_acao(char key)
 
         // coracao_pulsante_com_som_vermelho();
             break;
-        case '3': 
+        case '3':
+            anima_thais(&meu_pio);
+
             break;
         case '4': 
             break;
