@@ -124,9 +124,8 @@ void desliga_tudo(pio_t * meu_pio)
     printf("clock set to %ld\n", clock_get_hz(clk_sys));
 }
 
-void anima_thais(pio_t * meu_pio)
+void anima_thais(pio_t *meu_pio)
 {
-    void anima_thais(pio_t *meu_pio) {
     uint32_t valor_led = 0;
 
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
@@ -143,5 +142,4 @@ void anima_thais(pio_t * meu_pio)
     }
 
     printf("LEDs configurados com cores alternadas (vermelho e verde)\n");
-}
 }
