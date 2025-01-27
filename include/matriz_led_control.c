@@ -141,3 +141,19 @@ void desliga_tudo(pio_t * meu_pio)
     }
     printf("clock set to %ld\n", clock_get_hz(clk_sys));
 }
+
+void entrarModoBootloader() {
+
+    tocar_tom_buzzer(1000, 200); 
+    sleep_ms(100);              
+    tocar_tom_buzzer(1500, 200); 
+    sleep_ms(100);               
+    tocar_tom_buzzer(2000, 300);
+    sleep_ms(100);               
+    tocar_tom_buzzer(1000, 200);
+    sleep_ms(50);                
+    tocar_tom_buzzer(1500, 200); 
+    sleep_ms(50);                
+    tocar_tom_buzzer(2000, 400);
+    reset_usb_boot(0, 0); // Reinicia no modo bootloader
+}

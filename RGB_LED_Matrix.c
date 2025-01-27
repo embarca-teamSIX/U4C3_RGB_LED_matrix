@@ -11,6 +11,7 @@
 #include "hardware/adc.h"
 #include "pico/bootrom.h"
 #include "hardware/pwm.h"
+#include "pico/bootrom.h"  
 
 #include "include/keypad.h"
 #include "include/animacao_seta_jorge.h"
@@ -41,30 +42,21 @@ pio_t meu_pio = {
     .sm = 0          
 };
 
-// // Função para tocar um tom específico no buzzer
-// void tocar_tom_buzzer(uint16_t frequency, uint duration_ms) {
-//     gpio_set_function(BUZZER_B_PIN, GPIO_FUNC_PWM); // Configura pino do buzzer para PWM
-//     uint slice_num = pwm_gpio_to_slice_num(BUZZER_B_PIN);
+ void tocar_tom_buzzer(uint16_t frequency, uint duration_ms) 
+ {
+     gpio_set_function(BUZZER_B_PIN, GPIO_FUNC_PWM); // Configura pino do buzzer para PWM
+    uint slice_num = pwm_gpio_to_slice_num(BUZZER_B_PIN);
 
-//     pwm_set_wrap(slice_num, 125000000 / frequency); // Período do PWM
-//     pwm_set_gpio_level(BUZZER_B_PIN, (125000000 / frequency) / 2); // Duty cycle 50%
-//     pwm_set_enabled(slice_num, true); // Ativa o PWM
+     pwm_set_wrap(slice_num, 125000000 / frequency); // Período do PWM
+     pwm_set_gpio_level(BUZZER_B_PIN, (125000000 / frequency) / 2); // Duty cycle 50%
+    pwm_set_enabled(slice_num, true); // Ativa o PWM
 
-//     sleep_ms(duration_ms); // Toca por tempo especificado
+     sleep_ms(duration_ms); // Toca por tempo especificado
 
-//     pwm_set_enabled(slice_num, false); // Desliga o PWM
-//     gpio_set_function(BUZZER_B_PIN, GPIO_FUNC_SIO);
-//     gpio_put(BUZZER_B_PIN, 0);
-// }
-
-// // Função para tocar o som simulando pulsação
-// void tocar_pulsacao() {
-//     tocar_tom_buzzer(440, 200); // Primeiro batimento: frequência 440 Hz, duração 200ms
-//     sleep_ms(100);              // Pausa curta entre batimentos
-//     tocar_tom_buzzer(440, 400); // Segundo batimento: frequência 440 Hz, duração 400ms
-//     sleep_ms(300);              // Pausa antes do próximo ciclo
-// }
-
+     pwm_set_enabled(slice_num, false); // Desliga o PWM
+    gpio_set_function(BUZZER_B_PIN, GPIO_FUNC_SIO);
+     gpio_put(BUZZER_B_PIN, 0);
+ }
 void gpio_setup()
 {
     // Configura os pinos do buzzer  Bcomo saída
@@ -110,10 +102,11 @@ void escolher_acao(char key)
             break;
         case '4': 
             break;
-        case '5': 
+        case '5': //função de gleison
+                 // Ação para a tecla '5'
                 star_spangled_gleison();
-            break; // Ação para a tecla '5'
-                  //função de gleison
+            break; 
+                  
         case '6': 
             break;
         case '7': 
@@ -136,7 +129,8 @@ void escolher_acao(char key)
         case 'D':
             desenho_pio_verde_50(&meu_pio); 
             break;
-        case '*': 
+        case '*': //bootloader
+            entrarModoBootloader();
             break;
         case '#':
             ligar_todos_os_leds_20_p(&meu_pio); 
