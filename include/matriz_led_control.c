@@ -126,5 +126,22 @@ void desliga_tudo(pio_t * meu_pio)
 
 void anima_thais(pio_t * meu_pio)
 {
-    // implementar minha função
+    void ligar_leds_alternados(pio_t *meu_pio) {
+    uint32_t valor_led = 0;
+
+    for (int16_t i = 0; i < NUM_PIXELS; i++) {
+        if (i % 2 == 0) {
+            // LEDs pares ficam vermelhos
+            valor_led = matrix_rgb(1.0, 0.0, 0.0);
+        } else {
+            // LEDs ímpares ficam verdes
+            valor_led = matrix_rgb(0.0, 1.0, 0.0);
+        }
+
+        // Envia o valor codificado para o PIO
+        pio_sm_put_blocking(meu_pio->pio, meu_pio->sm, valor_led);
+    }
+
+    printf("LEDs configurados com cores alternadas (vermelho e verde)\n");
+}
 }
