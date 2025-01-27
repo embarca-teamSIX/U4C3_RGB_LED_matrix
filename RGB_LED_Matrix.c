@@ -21,6 +21,8 @@
 
 // #include "include/coracao_pulsante_Deividson.h"
 #include "include/matriz_led_control.h"
+#include "include/coracao_pulsante_Deividson.h"
+#include "include/buzzer.h"
 
 //pino de saída
 #define OUT_PIN 7
@@ -69,6 +71,31 @@ void gpio_setup()
 
     // Inicializa o teclado
     init_keypad(row_pins, col_pins);
+
+void coracao_pulsante_com_som_vermelho(pio_t *meu_pio) {
+    for (int i = 0; i < 3; i++) {
+        desenho_pio_vermelho(coracao_alto, meu_pio);
+        tocar_pulsacao();
+        sleep_ms(300);
+        desenho_pio_vermelho(coracao_medio, meu_pio);
+        sleep_ms(300);
+    }
+
+    desenho_pio_vermelho(explosao_frame1, meu_pio);
+    tocar_explosao();
+    sleep_ms(300);
+    desenho_pio_vermelho(explosao_frame2, meu_pio);
+    sleep_ms(300);
+    desenho_pio_vermelho(explosao_frame3, meu_pio);
+    sleep_ms(300);
+
+    desenho_pio_vermelho(restauracao_frame1, meu_pio);
+    tocar_restauracao();
+    sleep_ms(300);
+    desenho_pio_vermelho(restauracao_frame2, meu_pio);
+    sleep_ms(300);
+    desenho_pio_vermelho(restauracao_frame3, meu_pio);
+    sleep_ms(300);
 }
 
 void escolher_acao(char key) 
@@ -96,6 +123,8 @@ void escolher_acao(char key)
             desliga_tudo(&meu_pio); 
             break; 
         case '2': 
+        coracao_pulsante_com_som_vermelho(&meu_pio);
+
         // coracao_pulsante_com_som_vermelho();
             break;
         case '3': 
