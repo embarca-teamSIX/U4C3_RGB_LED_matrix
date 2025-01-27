@@ -101,7 +101,6 @@ void escolher_acao(char key)
             break;
         case '3':
             anima_thais(&meu_pio);
-
             break;
         case '4': 
             break;
