@@ -131,10 +131,10 @@ void anima_thais(pio_t *meu_pio)
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
         if (i % 2 == 0) {
             // LEDs pares ficam vermelhos
-            valor_led = matrix_rgb(1.0, 0.0, 0.0);
+            valor_led = matrix_rgb(0.0, 1.0, 0.0);
         } else {
             // LEDs ímpares ficam verdes
-            valor_led = matrix_rgb(0.0, 1.0, 0.0);
+            valor_led = matrix_rgb(0.0, 0.0, 1.0);
         }
 
         // Envia o valor codificado para o PIO
