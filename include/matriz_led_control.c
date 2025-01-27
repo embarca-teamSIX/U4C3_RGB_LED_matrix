@@ -126,7 +126,7 @@ void desliga_tudo(pio_t * meu_pio)
 
 void anima_thais(pio_t * meu_pio)
 {
-    void ligar_leds_alternados(pio_t *meu_pio) {
+    void anima_thais(pio_t *meu_pio) {
     uint32_t valor_led = 0;
 
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
