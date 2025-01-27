@@ -74,7 +74,7 @@ void escolher_acao(char key)
 {
     switch (key) 
     {
-        case '1':
+        case '1':  // Seta para a direita
             for(int i = 0; i < 2; i++)
             {
                 desenho_pio(seta_1, &meu_pio);
