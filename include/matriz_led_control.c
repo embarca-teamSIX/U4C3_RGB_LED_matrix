@@ -124,22 +124,32 @@ void desliga_tudo(pio_t * meu_pio)
     printf("clock set to %ld\n", clock_get_hz(clk_sys));
 }
 
-void anima_thais(pio_t *meu_pio)
-{
+void anima_thais(pio_t *meu_pio) {
     uint32_t valor_led = 0;
+    double intensidade = 0.0;
+    bool crescente = true;  // Controle para alternar entre aumentar e diminuir a intensidade
 
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
-        if (i % 2 == 0) {
-            // LEDs pares ficam vermelhos
-            valor_led = matrix_rgb(0.0, 1.0, 0.0);
+        // Transição de cores: se crescente, vai de vermelho para verde, se não, vai de verde para vermelho
+        if (crescente) {
+            // De vermelho para verde
+            intensidade = (i % 2 == 0) ? (intensidade) : (1.0 - intensidade);
+            valor_led = matrix_rgb(intensidade, 0.0, 1.0 - intensidade);  // R para G
         } else {
-            // LEDs ímpares ficam verdes
-            valor_led = matrix_rgb(0.0, 0.0, 1.0);
+            // De verde para vermelho
+            intensidade = (i % 2 == 0) ? (intensidade) : (1.0 - intensidade);
+            valor_led = matrix_rgb(1.0 - intensidade, 0.0, intensidade);  // G para R
         }
 
         // Envia o valor codificado para o PIO
         pio_sm_put_blocking(meu_pio->pio, meu_pio->sm, valor_led);
     }
 
-    printf("LEDs configurados com cores alternadas (vermelho e verde)\n");
+    // Alterna entre crescente e decrescente para criar um ciclo de animação
+    crescente = !crescente;
+
+    // Pode colocar um delay para observar melhor a animação
+    sleep_ms(50);  // Ajuste o tempo para o efeito desejado
+    
+    printf("Animação de LEDs alternando entre vermelho e verde completa\n");
 }
