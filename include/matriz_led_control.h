@@ -23,6 +23,7 @@ void init_pio_routine(pio_t * meu_pio, uint OUT_PIN);
 void imprimir_binario(int num) ;
 uint32_t matrix_rgb(double b, double r, double g);
 void desenho_pio(double *desenho, pio_t * meu_pio);
+void desenho_pio_rgb(double *desenho, pio_t * meu_pio);
 void desenho_pio_vermelho(double *desenho, pio_t * meu_pio);
 void desenho_pio_azul_100(pio_t * meu_pio);
 void desenho_pio_vermelho_80(pio_t * meu_pio);
