@@ -1,4 +1,9 @@
 #include "matriz_led_control.h"
+#include "pride_of_flag.h"
+#include <stdint.h>
+#include "pico/stdlib.h"
+#include "hardware/structs/systick.h"  // Necessário para a função de reset no SDK do Pico
+#include "pico/bootrom.h"  //
 // #include "buzzer_functions.h"
 
 void init_pio_routine(pio_t * meu_pio, uint OUT_PIN)
@@ -138,4 +143,23 @@ void entrarModoBootloader() {
     sleep_ms(50);                
     tocar_tom_buzzer(2000, 400);
     reset_usb_boot(0, 0); // Reinicia no modo bootloader
+}
+//desenho pio
+void desenho_pioFlag(double flagB[FRAMES_FLAGS][MAX_LEDS],double flagG[FRAMES_FLAGS][MAX_LEDS],double flagR[FRAMES_FLAGS][MAX_LEDS], pio_t * meu_pio)
+{
+    uint32_t valor_led = 0;
+    int frames=10;
+    for(int j=0; j<frames; j++)
+    {//frames ou linhas
+        for (int i = 0; i < NUM_PIXELS; i++) //laço pixels ou colnas
+        {
+            valor_led = matrix_rgb(flagB[j][24-i], flagR[j][24-i], flagG[j][24-i]);
+            pio_sm_put_blocking(meu_pio->pio, meu_pio->sm, valor_led);
+            //imprimir_binario(valor_led);
+        }
+    }
+}
+void star_spangled_gleison(pio_t * meu_pio)
+{
+desenho_pioFlag(flagB, flagG, flagR, &meu_pio);
 }

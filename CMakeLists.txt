@@ -65,7 +65,8 @@ add_executable(RGB_LED_Matrix
     RGB_LED_Matrix.c
     include/keypad.c
     include/matriz_led_control.c
-    include/buzzer.C
+    include/buzzer.c
+    include/pride_of_flag.c
 )
 
 # Set the program name and version
@@ -85,6 +86,8 @@ target_link_libraries(RGB_LED_Matrix
         hardware_pio
         hardware_adc
         pico_bootrom
+        hardware_flash
+        hardware_clocks
         )
         
 

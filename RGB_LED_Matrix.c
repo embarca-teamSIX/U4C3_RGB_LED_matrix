@@ -11,7 +11,9 @@
 #include "hardware/adc.h"
 #include "pico/bootrom.h"
 #include "hardware/pwm.h"
-#include "pico/bootrom.h"  
+#include "pico/bootrom.h"  //
+#include "hardware/flash.h"
+#include "hardware/structs/systick.h"  // Necessário para a função de reset no SDK do Pico
 
 #include "include/keypad.h"
 #include "include/animacao_seta_jorge.h"
@@ -30,6 +32,7 @@
 #define BUZZER_A_PIN 10
 #define BUZZER_B_PIN 21
 
+
 // Define os pinos do teclado
 uint8_t row_pins[ROWS] = {16, 17, 18, 19};
 uint8_t col_pins[COLS] = {20, 4, 9, 8};
@@ -44,21 +47,6 @@ pio_t meu_pio = {
     .sm = 0          
 };
 
- void tocar_tom_buzzer(uint16_t frequency, uint duration_ms) 
- {
-     gpio_set_function(BUZZER_B_PIN, GPIO_FUNC_PWM); // Configura pino do buzzer para PWM
-    uint slice_num = pwm_gpio_to_slice_num(BUZZER_B_PIN);
-
-     pwm_set_wrap(slice_num, 125000000 / frequency); // Período do PWM
-     pwm_set_gpio_level(BUZZER_B_PIN, (125000000 / frequency) / 2); // Duty cycle 50%
-    pwm_set_enabled(slice_num, true); // Ativa o PWM
-
-     sleep_ms(duration_ms); // Toca por tempo especificado
-
-     pwm_set_enabled(slice_num, false); // Desliga o PWM
-    gpio_set_function(BUZZER_B_PIN, GPIO_FUNC_SIO);
-     gpio_put(BUZZER_B_PIN, 0);
- }
 void gpio_setup()
 {
     // Configura os pinos do buzzer  Bcomo saída
@@ -71,7 +59,7 @@ void gpio_setup()
 
     // Inicializa o teclado
     init_keypad(row_pins, col_pins);
-
+}
 void coracao_pulsante_com_som_vermelho(pio_t *meu_pio) {
     for (int i = 0; i < 3; i++) {
         desenho_pio_vermelho(coracao_alto, meu_pio);
@@ -133,7 +121,7 @@ void escolher_acao(char key)
             break;
         case '5': //função de gleison
                  // Ação para a tecla '5'
-                star_spangled_gleison();
+                star_spangled_gleison(& meu_pio);
             break; 
                   
         case '6': 
@@ -185,7 +173,7 @@ int main()
 
     // Inicializa o teclado
     init_keypad(row_pins, col_pins);
-
+/*
     while (true) 
     {
         char key = scan_keypad(row_pins, col_pins);
@@ -196,6 +184,18 @@ int main()
         }
         sleep_ms(300);  // debounce
     }
-
+*/
+while(true)
+{
+ //   ligar_todos_os_leds_20_p(&meu_pio); 
+ //   sleep_ms(300); 
+ //   desliga_tudo(&meu_pio);
+ //   sleep_ms(600); 
+    star_spangled_gleison(&meu_pio);
+    
+ //   sleep_ms(300); 
+ //   desliga_tudo(&meu_pio);
+    //entrarModoBootloader();
+}
     return 0;
 }
