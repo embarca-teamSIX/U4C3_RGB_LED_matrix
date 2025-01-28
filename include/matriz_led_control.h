@@ -21,7 +21,7 @@ typedef struct {
     uint sm;
 } pio_t;
 
-void init_pio_routine(pio_t * meu_pio, uint OUT_PIN);
+void init_pio_routine(pio_t * meu_pio);
 void imprimir_binario(int num) ;
 uint32_t matrix_rgb(double b, double r, double g);
 void desenho_pio(double *desenho, pio_t * meu_pio);

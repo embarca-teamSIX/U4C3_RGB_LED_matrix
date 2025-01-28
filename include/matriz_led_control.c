@@ -4,23 +4,11 @@
 #include "pico/stdlib.h"
 #include "hardware/structs/systick.h"  // Necessário para a função de reset no SDK do Pico
 #include "pico/bootrom.h"  //
+#include <stdio.h>
 // #include "buzzer_functions.h"
+#define NUM_PIXELS 25
 
-void init_pio_routine(pio_t * meu_pio, uint OUT_PIN)
-{
-    //coloca a frequência de clock para 128 MHz, facilitando a divisão pelo clock
-    meu_pio->ok = set_sys_clock_khz(128000, false);
 
-    stdio_init_all();
-
-    printf("iniciando a transmissão PIO");
-    if (meu_pio->ok) printf("clock set to %ld\n", clock_get_hz(clk_sys));
-
-    //configurações da PIO
-    uint offset = pio_add_program(meu_pio->pio, &pio_matrix_program);
-    meu_pio->sm = pio_claim_unused_sm(meu_pio->pio, true);
-    pio_matrix_program_init(meu_pio->pio, meu_pio->sm, offset, OUT_PIN);
-}
 
 //imprimir valor binário
 void imprimir_binario(int num) 
@@ -31,15 +19,7 @@ void imprimir_binario(int num)
  }
 }
 
-//rotina para definição da intensidade de cores do led
-uint32_t matrix_rgb(double b, double r, double g)
-{
-  unsigned char R, G, B;
-  R = r * 255;
-  G = g * 255;
-  B = b * 255;
-  return (G << 24) | (R << 16) | (B << 8);
-}
+
 
 void desenho_pio(double *desenho, pio_t * meu_pio)
 {
@@ -145,21 +125,29 @@ void entrarModoBootloader() {
     reset_usb_boot(0, 0); // Reinicia no modo bootloader
 }
 //desenho pio
-void desenho_pioFlag(double flagB[FRAMES_FLAGS][MAX_LEDS],double flagG[FRAMES_FLAGS][MAX_LEDS],double flagR[FRAMES_FLAGS][MAX_LEDS], pio_t * meu_pio)
+void desenho_pioFlag(double (*flagB)[25],double (*flagG)[25],double (*flagR)[25], pio_t *meu_pio)
 {
     uint32_t valor_led = 0;
     int frames=10;
+    tocar_tom_buzzer(1000, 200); 
+    sleep_ms(100);              
+
     for(int j=0; j<frames; j++)
     {//frames ou linhas
         for (int i = 0; i < NUM_PIXELS; i++) //laço pixels ou colnas
         {
-            valor_led = matrix_rgb(flagB[j][24-i], flagR[j][24-i], flagG[j][24-i]);
-            pio_sm_put_blocking(meu_pio->pio, meu_pio->sm, valor_led);
+            valor_led = matrix_rgb(flagB[j][i], flagR[j][i], flagG[j][i]);
+            pio_sm_put_blocking(pio0, 0, valor_led);
+            //desliga_tudo(&meu_pio)
             //imprimir_binario(valor_led);
+            printf("\n**********\nvalor led: %lu\nvalor j: %d\n valor i: %d\n\n-------------------\n flagB: %f\n flagF: %f\nflagG: %f \n\n*********", valor_led, j, i, flagB[j][i], flagR[j][i], flagG[j][i]);
         }
+        sleep_ms(50);
     }
 }
-void star_spangled_gleison(pio_t * meu_pio)
+void star_spangled_gleison(pio_t *meu_pio)
 {
 desenho_pioFlag(flagB, flagG, flagR, &meu_pio);
 }
+
+
