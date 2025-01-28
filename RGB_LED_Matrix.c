@@ -14,6 +14,7 @@
 
 #include "include/keypad.h"
 #include "include/animacao_seta_jorge.h"
+#include "include/animacao_rostos_jorge.h"
 
 //arquivo .pio
 #include "pio_matrix.pio.h"
@@ -74,7 +75,7 @@ void escolher_acao(char key)
 {
     switch (key) 
     {
-        case '1':
+        case '1':  // Seta para a direita
             for(int i = 0; i < 2; i++)
             {
                 desenho_pio(seta_1, &meu_pio);
@@ -114,7 +115,22 @@ void escolher_acao(char key)
             break;
         case '9':
             break;
-        case '0':
+        case '0':  // Rosto variando de triste pra feliz (5 frames)
+            meu_pio.r = 1; meu_pio.g = 0; meu_pio.b = 0;
+            desenho_pio_rgb(rosto_triste, &meu_pio);
+            sleep_ms(500);
+            meu_pio.r = 1; meu_pio.g = 1; meu_pio.b = 1;
+            desenho_pio_rgb(rosto_quase_triste, &meu_pio);
+            sleep_ms(500);
+            meu_pio.r = 1; meu_pio.g = 1; meu_pio.b = 1;
+            desenho_pio_rgb(rosto_normal, &meu_pio);
+            sleep_ms(500);
+            meu_pio.r = 1; meu_pio.g = 1; meu_pio.b = 1;
+            desenho_pio_rgb(rosto_quase_feliz, &meu_pio);
+            sleep_ms(500);
+            meu_pio.r = 0; meu_pio.g = 1; meu_pio.b = 0;
+            desenho_pio_rgb(rosto_feliz, &meu_pio);
+            sleep_ms(300);
             break;
         case 'A': 
             desliga_tudo(&meu_pio); 
