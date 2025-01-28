@@ -151,5 +151,5 @@ void anima_thais(pio_t *meu_pio) {
     // Pode colocar um delay para observar melhor a animação
     sleep_ms(50);  // Ajuste o tempo para o efeito desejado
     
-    printf("Animação de LEDs alternando entre vermelho e verde completa\n");
+    printf("Animação de LEDs alternando entre vermelho e verde\n");
 }
