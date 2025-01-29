@@ -27,6 +27,7 @@ O programa realiza as seguintes funcionalidades principais:
    - O sistema mapeia ações para as teclas '0'-'9', 'A'-'D', '*' e '#'.
    - **Tecla '1'**: Exibe uma animação de uma seta que se move pela matriz de LEDs.
    - **Tecla '2'**: Exibe uma animação de coração pulsante com som, seguida de uma explosão e a reconstrução do coração.
+   - **Tecla '0'**: Exibe uma animação de um rosto variando da expressão de triste para feliz.
    - **Tecla 'A'**: Desliga todos os LEDs e sons.
    - **Tecla 'B'**: Liga todos os LEDs da matriz com cor azul e 100% de brilho.
    - **Tecla 'C'**: Liga todos os LEDs da matriz com cor vermelha e 80% de brilho.

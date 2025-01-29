@@ -33,6 +33,18 @@ void desenho_pio(double *desenho, pio_t * meu_pio)
     printf("clock set to %ld\n", clock_get_hz(clk_sys));
 }
 
+void desenho_pio_rgb(double *desenho, pio_t * meu_pio)
+{
+    uint32_t valor_led = 0;
+
+    for (int16_t i = 0; i < NUM_PIXELS; i++) {
+        valor_led = matrix_rgb(desenho[24-i]*meu_pio->b, desenho[24-i]*meu_pio->r, desenho[24-i]*meu_pio->g);
+        pio_sm_put_blocking(meu_pio->pio, meu_pio->sm, valor_led);
+        //imprimir_binario(valor_led);
+    }
+    printf("clock set to %ld\n", clock_get_hz(clk_sys));
+}
+
 void desenho_pio_vermelho(double *desenho, pio_t * meu_pio) 
 {
     uint32_t valor_led = 0;
