@@ -24,18 +24,22 @@ O programa realiza as seguintes funcionalidades principais:
    - A animação e o som são sincronizados, proporcionando uma resposta interativa ao usuário.
 
 4. **Funções de Controle**:
-   - O sistema mapeia ações para as teclas '0'-'9', 'A'-'D', '*' e '#'.
    - **Tecla '1'**: Exibe uma animação de uma seta que se move pela matriz de LEDs.
-   - **Tecla '2'**: Exibe uma animação de coração pulsante com som, seguida de uma explosão e a reconstrução do coração.
-   - **Tecla '0'**: Exibe uma animação de um rosto variando da expressão de triste para feliz.
+   - **Tecla '2'**: Exibe animação de coração pulsante com som, seguida de explosão e reconstrução do coração.
+   - **Tecla '3'**: [Ação a ser definida]
+   - **Tecla '4'**: [Ação a ser definida]
+   - **Tecla '5'**: Exibição de bandeira Experimental para teste de cores e RGB do led
+   - **Tecla '6'**: [Ação a ser definida]
+   - **Tecla '7'**: [Ação a ser definida]
+   - **Tecla '8'**: [Ação a ser definida]
+   - **Tecla '9'**: [Ação a ser definida]
+   - **Tecla '0'**: Animação com a variação de um rosto triste pra um rosto feliz.
    - **Tecla 'A'**: Desliga todos os LEDs e sons.
-   - **Tecla 'B'**: Liga todos os LEDs da matriz com cor azul e 100% de brilho.
-   - **Tecla 'C'**: Liga todos os LEDs da matriz com cor vermelha e 80% de brilho.
-   - **Tecla 'D'**: Liga todos os LEDs da matriz com cor verde e 50% de brilho.
-
-5. **Desligamento de LEDs e Sons**: 
-   - **Tecla 'A'**: Desliga todos os LEDs e sons.
+   - **Tecla 'B'**: Liga todos os LEDs em azul com brilho de 100%.
+   - **Tecla 'C'**: Liga todos os LEDs em vermelho com brilho de 80%.
+   - **Tecla 'D'**: Liga todos os LEDs em verde com brilho de 50%.
    - **Tecla '#'**: Liga todos os LEDs com brilho de 20%.
+   - **Tecla '*'**: Entra em modo de bootloader.
 
 ## Como Usar
 
@@ -46,23 +50,8 @@ O programa realiza as seguintes funcionalidades principais:
    - Ao executar o código, o sistema estará pronto para interagir.
    - Pressione qualquer tecla do teclado para ver a ação correspondente.
 
-3. **Teclas e suas Ações**:
-   - **Tecla '1'**: Exibe uma animação de uma seta que se move pela matriz de LEDs.
-   - **Tecla '2'**: Exibe animação de coração pulsante com som, seguida de explosão e reconstrução do coração.
-   - **Tecla '3'**: [Ação a ser definida]
-   - **Tecla '4'**: [Ação a ser definida]
-   - **Tecla '5'**: Exibição de bandeira Experimental para teste de cores e RGB do led
-   - **Tecla '6'**: [Ação a ser definida]
-   - **Tecla '7'**: [Ação a ser definida]
-   - **Tecla '8'**: [Ação a ser definida]
-   - **Tecla '9'**: [Ação a ser definida]
-   - **Tecla '0'**: [Ação a ser definida]
-   - **Tecla 'A'**: Desliga todos os LEDs e sons.
-   - **Tecla 'B'**: Liga todos os LEDs em azul com brilho de 100%.
-   - **Tecla 'C'**: Liga todos os LEDs em vermelho com brilho de 80%.
-   - **Tecla 'D'**: Liga todos os LEDs em verde com brilho de 50%.
-   - **Tecla '#'**: Liga todos os LEDs com brilho de 20%.
-   - **Tecla '*'**: [Ação a ser definida]
+## Link do vídeo - Apresentação da tarefa
+- https://youtu.be/1xzIMVtQOTQ
 
 ## Considerações
 

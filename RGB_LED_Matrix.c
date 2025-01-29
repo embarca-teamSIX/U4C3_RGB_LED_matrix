@@ -18,6 +18,7 @@
 
 #include "include/keypad.h"
 #include "include/animacao_seta_jorge.h"
+#include "include/animacao_rostos_jorge.h"
 #include "pride_of_flag.h"
 //arquivo .pio
 #include "pio_matrix.pio.h"
@@ -190,6 +191,7 @@ void escolher_acao(char key)
             desenho_pio_verde_50(&meu_pio); 
             break;
         case '*': //bootloader
+            printf("\n### Entrando no modo Bootloader...\n");
             entrarModoBootloader();
             break;
         case '#':
