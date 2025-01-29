@@ -1,4 +1,9 @@
-#for jorge
+# for jorge
 build
-#for me
-** /build/
+
+# for me
+*/build/
+
+# Geral
+/build/
+.vscode/
