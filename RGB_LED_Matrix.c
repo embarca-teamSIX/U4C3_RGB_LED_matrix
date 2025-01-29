@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include<stdint.h>
 #include <math.h>
 #include "pico/stdlib.h"
 #include "hardware/pio.h"
@@ -64,11 +65,14 @@ void init_pio_routine(pio_t * meu_pio)
 //rotina para definição da intensidade de cores do led
 uint32_t matrix_rgb(double b, double r, double g)
 {
+    r=fmax(0.0, fmin(1.0, r));
+    g=fmax(0.0, fmin(1.0, g));
+    b=fmax(0.0, fmin(1.0, b));
   unsigned char R, G, B;
-  R = r * 255;
-  G = g * 255;
-  B = b * 255;
-  return (R << 24) | (G << 16) | (B << 8)|0xFF;
+  R = (unsigned char)(r * 255.0);
+  G = (unsigned char)(g * 255.0);
+  B = (unsigned char)(b * 255.0);
+  return  (G << 24)| (R << 16) | (B << 8)|0xFF;
 }
 
 void gpio_setup()
@@ -197,7 +201,7 @@ int main()
 
     // Inicializa o teclado
     init_keypad(row_pins, col_pins);
-/*
+
     while (true) 
     {
         char key = scan_keypad(row_pins, col_pins);
@@ -208,18 +212,7 @@ int main()
         }
         sleep_ms(300);  // debounce
     }
-*/
-while(true)
-{
-    ligar_todos_os_leds_20_p(&meu_pio); 
-    sleep_ms(300); 
-    desliga_tudo(&meu_pio);
-    sleep_ms(600); 
-    star_spangled_gleison(&meu_pio);
-    
-    sleep_ms(30000); 
-    desliga_tudo(&meu_pio);
-    entrarModoBootloader();
-}
+
+
     return 0;
 }

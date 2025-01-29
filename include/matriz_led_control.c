@@ -27,7 +27,7 @@ void desenho_pio(double *desenho, pio_t * meu_pio)
 
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
         valor_led = matrix_rgb(desenho[24-i], desenho[24-i], desenho[24-i]);
-        pio_sm_put_blocking(meu_pio->pio, meu_pio->sm, valor_led);
+        pio_sm_put_blocking(pio0, 0, valor_led);
         //imprimir_binario(valor_led);
     }
     printf("clock set to %ld\n", clock_get_hz(clk_sys));
@@ -39,7 +39,7 @@ void desenho_pio_vermelho(double *desenho, pio_t * meu_pio)
 
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
         valor_led = matrix_rgb(0.0, desenho[24 - i], 0.0); // Corrigido para usar o canal vermelho corretamente
-        pio_sm_put_blocking(meu_pio->pio, meu_pio->sm, valor_led);
+        pio_sm_put_blocking(pio0, 0, valor_led);
     }
     printf("Frame desenhado na matriz de LEDs com cor vermelha.\n");
 }
@@ -50,7 +50,7 @@ void desenho_pio_azul_100(pio_t * meu_pio)
 
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
         valor_led = matrix_rgb(1.0, 0.0, 0.0);
-        pio_sm_put_blocking(meu_pio->pio, meu_pio->sm, valor_led);
+        pio_sm_put_blocking(pio0, 0, valor_led);
         //imprimir_binario(valor_led);
     }
     printf("clock set to %ld\n", clock_get_hz(clk_sys));
@@ -62,7 +62,7 @@ void desenho_pio_vermelho_80(pio_t * meu_pio)
 
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
         valor_led = matrix_rgb(0.0, 0.8, 0.0);
-        pio_sm_put_blocking(meu_pio->pio, meu_pio->sm, valor_led);
+        pio_sm_put_blocking(pio0, 0, valor_led);
         //imprimir_binario(valor_led);
     }
     printf("clock set to %ld\n", clock_get_hz(clk_sys));
@@ -74,7 +74,7 @@ void desenho_pio_verde_50(pio_t * meu_pio)
 
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
         valor_led = matrix_rgb(0.0, 0.0, 0.5);
-        pio_sm_put_blocking(meu_pio->pio, meu_pio->sm, valor_led);
+        pio_sm_put_blocking(pio0, 0, valor_led);
         //imprimir_binario(valor_led);
     }
     printf("clock set to %ld\n", clock_get_hz(clk_sys));
@@ -91,7 +91,7 @@ void ligar_todos_os_leds_20_p(pio_t * meu_pio)
 
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
         valor_led = matrix_rgb(ligar_todos_os_leds_20[24-i], ligar_todos_os_leds_20[24-i], ligar_todos_os_leds_20[24-i]);
-        pio_sm_put_blocking(meu_pio->pio, meu_pio->sm, valor_led);
+        pio_sm_put_blocking(pio0, 0, valor_led);
         //imprimir_binario(valor_led);
     }
     printf("clock set to %ld\n", clock_get_hz(clk_sys));
@@ -103,7 +103,7 @@ void desliga_tudo(pio_t * meu_pio)
 
     for (int16_t i = 0; i < NUM_PIXELS; i++) {
         valor_led = matrix_rgb(0.0, 0.0, 0.0);
-        pio_sm_put_blocking(meu_pio->pio, meu_pio->sm, valor_led);
+        pio_sm_put_blocking(pio0, 0, valor_led);
         //imprimir_binario(valor_led);
     }
     printf("clock set to %ld\n", clock_get_hz(clk_sys));
@@ -125,6 +125,17 @@ void entrarModoBootloader() {
     reset_usb_boot(0, 0); // Reinicia no modo bootloader
 }
 //desenho pio
+uint32_t matrix_rgbFlag(double b, double r, double g)
+{
+    r=fmax(0.0, fmin(1.0, r));
+    g=fmax(0.0, fmin(1.0, g));
+    b=fmax(0.0, fmin(1.0, b));
+  unsigned char R, G, B;
+  R = (unsigned char)(r * 255.0);
+  G = (unsigned char)(g * 255.0);
+  B = (unsigned char)(b * 255.0);
+  return  (G << 24)| (R << 16) | (B << 8)|0xFF;
+}
 void desenho_pioFlag(double (*flagB)[25],double (*flagG)[25],double (*flagR)[25], pio_t *meu_pio)
 {
     uint32_t valor_led = 0;
@@ -132,21 +143,24 @@ void desenho_pioFlag(double (*flagB)[25],double (*flagG)[25],double (*flagR)[25]
     tocar_tom_buzzer(1000, 200); 
     sleep_ms(100);              
 
-    for(int j=0; j<frames; j++)
+    for(int16_t j=0; j<frames; j++)
     {//frames ou linhas
-        for (int i = 0; i < NUM_PIXELS; i++) //laço pixels ou colnas
+        for (int16_t i = 0; i <= NUM_PIXELS; i++) //laço pixels ou colnas
         {
-            valor_led = matrix_rgb(flagB[j][i], flagR[j][i], flagG[j][i]);
+
+            valor_led = matrix_rgbFlag(flagB[j][24-i], flagR[j][24-i], flagG[j][24-i]);
+          
             pio_sm_put_blocking(pio0, 0, valor_led);
-            //desliga_tudo(&meu_pio)
-            //imprimir_binario(valor_led);
-            printf("\n**********\nvalor led: %lu\nvalor j: %d\n valor i: %d\n\n-------------------\n flagB: %f\n flagF: %f\nflagG: %f \n\n*********", valor_led, j, i, flagB[j][i], flagR[j][i], flagG[j][i]);
-        }
-        sleep_ms(50);
+            sleep_us(50);
+   
+ }
+        sleep_ms(500);
     }
 }
+
 void star_spangled_gleison(pio_t *meu_pio)
 {
+
 desenho_pioFlag(flagB, flagG, flagR, &meu_pio);
 }
 
