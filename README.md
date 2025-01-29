@@ -51,7 +51,7 @@ O programa realiza as seguintes funcionalidades principais:
    - **Tecla '2'**: Exibe animação de coração pulsante com som, seguida de explosão e reconstrução do coração.
    - **Tecla '3'**: [Ação a ser definida]
    - **Tecla '4'**: [Ação a ser definida]
-   - **Tecla '5'**: [Ação a ser definida]
+   - **Tecla '5'**: Exibição de bandeira Experimental para teste de cores e RGB do led
    - **Tecla '6'**: [Ação a ser definida]
    - **Tecla '7'**: [Ação a ser definida]
    - **Tecla '8'**: [Ação a ser definida]

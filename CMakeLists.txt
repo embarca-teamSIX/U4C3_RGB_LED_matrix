@@ -1,16 +1,4 @@
-# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
-if(WIN32)
-    set(USERHOME $ENV{USERPROFILE})
-else()
-    set(USERHOME $ENV{HOME})
-endif()
-set(sdkVersion 2.1.0)
-set(toolchainVersion 13_3_Rel1)
-set(picotoolVersion 2.1.0)
-set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
-if (EXISTS ${picoVscode})
-    include(${picoVscode})
-endif()
+
 # ====================================================================================
 # == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
 if(WIN32)
@@ -77,7 +65,8 @@ add_executable(RGB_LED_Matrix
     RGB_LED_Matrix.c
     include/keypad.c
     include/matriz_led_control.c
-    include/buzzer.C
+    include/buzzer.c
+    include/pride_of_flag.c
 )
 
 # Set the program name and version
@@ -97,6 +86,8 @@ target_link_libraries(RGB_LED_Matrix
         hardware_pio
         hardware_adc
         pico_bootrom
+        hardware_flash
+        hardware_clocks
         )
         
 

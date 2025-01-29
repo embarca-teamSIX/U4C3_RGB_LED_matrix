@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include<stdint.h>
 #include <math.h>
 #include "pico/stdlib.h"
 #include "hardware/pio.h"
@@ -11,11 +12,13 @@
 #include "hardware/adc.h"
 #include "pico/bootrom.h"
 #include "hardware/pwm.h"
+#include "pico/bootrom.h"  //
+#include "hardware/flash.h"
+#include "hardware/structs/systick.h"  // Necessário para a função de reset no SDK do Pico
 
 #include "include/keypad.h"
 #include "include/animacao_seta_jorge.h"
-#include "include/animacao_rostos_jorge.h"
-
+#include "pride_of_flag.h"
 //arquivo .pio
 #include "pio_matrix.pio.h"
 
@@ -30,6 +33,7 @@
 #define BUZZER_A_PIN 10
 #define BUZZER_B_PIN 21
 
+
 // Define os pinos do teclado
 uint8_t row_pins[ROWS] = {16, 17, 18, 19};
 uint8_t col_pins[COLS] = {20, 4, 9, 8};
@@ -43,8 +47,47 @@ pio_t meu_pio = {
     .b = 0.0, 
     .sm = 0          
 };
+void init_pio_routine(pio_t * meu_pio)
+{
+    //coloca a frequência de clock para 128 MHz, facilitando a divisão pelo clock
+    meu_pio->ok = set_sys_clock_khz(128000, false);
 
+    stdio_init_all();
 
+    printf("iniciando a transmissão PIO");
+    if (meu_pio->ok) printf("clock set to %ld\n", clock_get_hz(clk_sys));
+
+    //configurações da PIO
+    uint offset = pio_add_program(meu_pio->pio, &pio_matrix_program);
+    meu_pio->sm = pio_claim_unused_sm(meu_pio->pio, true);
+    pio_matrix_program_init(meu_pio->pio, meu_pio->sm, offset, OUT_PIN);
+}
+//rotina para definição da intensidade de cores do led
+uint32_t matrix_rgb(double b, double r, double g)
+{
+    r=fmax(0.0, fmin(1.0, r));
+    g=fmax(0.0, fmin(1.0, g));
+    b=fmax(0.0, fmin(1.0, b));
+  unsigned char R, G, B;
+  R = (unsigned char)(r * 255.0);
+  G = (unsigned char)(g * 255.0);
+  B = (unsigned char)(b * 255.0);
+  return  (G << 24)| (R << 16) | (B << 8)|0xFF;
+}
+
+void gpio_setup()
+{
+    // Configura os pinos do buzzer  Bcomo saída
+    gpio_init(BUZZER_B_PIN);
+    gpio_set_dir(BUZZER_B_PIN, GPIO_OUT);
+
+    // Configura os pinos do buzzer A como saída
+    gpio_init(BUZZER_A_PIN);
+    gpio_set_dir(BUZZER_A_PIN, GPIO_OUT);
+
+    // Inicializa o teclado
+    init_keypad(row_pins, col_pins);
+}
 void coracao_pulsante_com_som_vermelho(pio_t *meu_pio) {
     for (int i = 0; i < 3; i++) {
         desenho_pio_vermelho(coracao_alto, meu_pio);
@@ -104,8 +147,11 @@ void escolher_acao(char key)
             break;
         case '4': 
             break;
-        case '5': 
-            break;
+        case '5': //função de gleison
+                 // Ação para a tecla '5'
+                star_spangled_gleison(& meu_pio);
+            break; 
+                  
         case '6': 
             break;
         case '7': 
@@ -143,7 +189,8 @@ void escolher_acao(char key)
         case 'D':
             desenho_pio_verde_50(&meu_pio); 
             break;
-        case '*': 
+        case '*': //bootloader
+            entrarModoBootloader();
             break;
         case '#':
             ligar_todos_os_leds_20_p(&meu_pio); 
@@ -157,7 +204,7 @@ void escolher_acao(char key)
 //função principal
 int main()
 { 
-    init_pio_routine(&meu_pio, OUT_PIN);
+    init_pio_routine(&meu_pio);
     
     // Configura os pinos do buzzer  Bcomo saída
     gpio_init(BUZZER_B_PIN);
@@ -180,6 +227,7 @@ int main()
         }
         sleep_ms(300);  // debounce
     }
+
 
     return 0;
 }
